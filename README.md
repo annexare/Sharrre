@@ -19,7 +19,7 @@ Usage
 
 Example
 ===
-    
+
   <div id="demo1" data-title="sharrre" data-url="http://sharrre.com" ></div>
   $(document).ready(function(){
     $('#demo1').sharrre({
@@ -36,7 +36,7 @@ Example
         delicious: {size: 'tall'}
       },
       hover: function(api, options){
-        $(api.element).find('.buttons').show();      
+        $(api.element).find('.buttons').show();
       },
       hide: function(api, options){
         $(api.element).find('.buttons').hide();
@@ -45,7 +45,7 @@ Example
   });
 
   See example on [official website] (http://sharrre.com/#demos)
-	
+
 
 Dependencies
 ===
@@ -58,3 +58,10 @@ Author
 - [Julien Hany](http://hany.fr)
 - [Twitter (@_JulienH)](http://twitter.com/_JulienH)
 - [Google+](http://plus.google.com/111637545317893682325)
+
+Modification
+===
+
+Changes by [Annexare Studio](http://annexare.com/):
+ - Facebook Page likes count
+ - [VK](http://vk.com) support (planned)
