@@ -66,7 +66,7 @@
         hashtags: '',
         via: '',
         related: '',
-		username: false,
+		username: false, // if string, gets number of followers instead of tweets
         lang: 'en'
       },
       digg: { //http://about.digg.com/downloads/button/smart
