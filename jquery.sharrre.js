@@ -297,14 +297,15 @@
           VK.Observer.subscribe('widgets.like.unliked', function(counted) {
             _gaq.push(['_trackSocial', 'vkontakte', 'unlike']);
           });
-		};
+        },
+        vkInit = function() {
+          VK.init({apiId: sett.apiId, onlyWidgets: true});
+          vkButton();
+        };
       if(typeof VK === 'undefined' && loading == 0){
         loading = 1;
         (function() {
-          window.vkAsyncInit = function() {
-            VK.init({apiId: sett.apiId, onlyWidgets: true});
-            vkButton();
-          };
+          window.vkAsyncInit = vkInit;
           var vjs = document.createElement('script');
 		  vjs.type = 'text/javascript';
 		  vjs.async = true;
@@ -312,7 +313,7 @@
           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(vjs, s);
         })();
       } else {
-        vkButton();
+        vkInit();
 	  }
     }
   },
