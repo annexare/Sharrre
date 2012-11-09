@@ -283,24 +283,37 @@
     },
     vk : function(self) {
       var sett = self.options.buttons.vk;
+      $(self.element).find('.buttons').append('<div class="button vk"><div id="vk-like-' + sett.bId + '" class="vk-button" data-url="'+(sett.pageUrl !== '' ? sett.pageUrl : self.options.url)+'" data-pageUrl="'+(sett.pageUrl !== '' ? sett.pageUrl : self.options.url)+'"></div></div>');
 
-      if(typeof VK === 'undefined'){
+      var loading = 0,
+        vkButton = function() {
+          VK.Widgets.Like("vk-like-" + sett.bId++, sett);
+          //VK.api('likes.getList', {type: 'sitepage', page_url: (sett.pageUrl !== '' ? sett.pageUrl : self.options.url)}, function(r) {
+          //  console.log('VK likes.getList: ', r);
+	      //});
+          VK.Observer.subscribe('widgets.like.liked', function(counted) {
+            _gaq.push(['_trackSocial', 'vkontakte', 'like']);
+          });
+          VK.Observer.subscribe('widgets.like.unliked', function(counted) {
+            _gaq.push(['_trackSocial', 'vkontakte', 'unlike']);
+          });
+		};
+      if(typeof VK === 'undefined' && loading == 0){
+        loading = 1;
         (function() {
+          window.vkAsyncInit = function() {
+            VK.init({apiId: sett.apiId, onlyWidgets: true});
+            vkButton();
+          };
           var vjs = document.createElement('script');
 		  vjs.type = 'text/javascript';
-		  // vjs.async = true;
+		  vjs.async = true;
           vjs.src = '//vk.com/js/api/openapi.js?63';
           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(vjs, s);
         })();
-      }
-      else{
-        VK.init({apiId: self.options.buttons.vk.apiId, onlyWidgets: true});
-      }
-
-      $(self.element).find('.buttons').append('<div class="button vk"><div id="vk-like-' + sett.bId + '" class="vk-button" data-url="'+(sett.pageUrl !== '' ? sett.pageUrl : self.options.url)+'" data-pageUrl="'+(sett.pageUrl !== '' ? sett.pageUrl : self.options.url)+'"></div></div>');
-      VK.Widgets.Like("vk-like-" + sett.bId, sett);
-
-	  self.options.buttons.vk.bId++;
+      } else {
+        vkButton();
+	  }
     }
   },
   /* Tracking for Google Analytics
@@ -356,12 +369,7 @@
       //if somenone find a solution, mail me !
     },
     vk: function(){
-      VK.Observer.subscribe('widgets.like.liked', function(likeCount) {
-        _gaq.push(['_trackSocial', 'vkontakte', 'like']);
-      });
-      VK.Observer.subscribe('widgets.like.unliked', function(likeCount) {
-        _gaq.push(['_trackSocial', 'vkontakte', 'unlike']);
-      });
+      // subscribed after init()
     }
   },
   /* Popup for each social network

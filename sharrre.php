@@ -59,11 +59,13 @@ if (filter_var($_GET['url'], FILTER_VALIDATE_URL)) {
 		if (($sp = strpos($content, $s)) !== FALSE) {
 			$json['count'] = (int)substr($content, $sp + strlen($s), strpos($content, ')', $sp + strlen($s)));
 		}
-		$json['debug'] = $content;
 
 		// likes count, really requires App?
 		// $app = (int)$_GET['app'];
-		// $content = parse("http://vk.com/widget_like.php?app=$app&type=mini&url=$url");
+		// $api = "https://api.vk.com/method/likes.getList?type=sitepage&owner_id=$app&page_url=$url";
+		// $content = json_decode(file_get_contents($api));
+		// $json['api'] = $api;
+		// $json['debug'] = $content;
 	}
 }
 echo str_replace('\\/', '/', json_encode($json));
