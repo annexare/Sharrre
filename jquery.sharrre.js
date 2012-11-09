@@ -95,7 +95,17 @@
         layout: 'horizontal'
       },
       vk: {
-        // TODO
+		apiId: 0,
+		bId: 1,         // button ID on the page
+		height: 22,     // button height: 18, 20, 22, 24
+		// pageTitle
+		// pageDescription
+		pageUrl: '',    // if you need to personalize url button
+		// pageImage
+		// text: '',    // 140 chars max
+		type: 'full',   // button, full, mini, vertical
+		verb: 0,        // 0 like, 1 recommend
+		width: 350      // only for type = full
       }
     }
   },
@@ -114,7 +124,8 @@
     //stumbleupon: "http://www.stumbleupon.com/services/1.01/badge.getinfo?url={url}&format=jsonp&callback=?",
     stumbleupon: "",
     linkedin: "http://www.linkedin.com/countserv/count/share?format=jsonp&url={url}&callback=?",
-    pinterest: ""
+    pinterest: "",
+	vk: ""
   },
   /* Load share buttons asynchronously
   ================================================== */
@@ -267,7 +278,23 @@
     vk : function(self) {
       var sett = self.options.buttons.vk;
 
-      // TODO
+      if(typeof VK === 'undefined'){
+        (function() {
+          var vjs = document.createElement('script');
+		  vjs.type = 'text/javascript';
+		  // vjs.async = true;
+          vjs.src = '//vk.com/js/api/openapi.js?63';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(vjs, s);
+        })();
+      }
+      else{
+        VK.init({apiId: self.options.buttons.vk.apiId, onlyWidgets: true});
+      }
+
+      $(self.element).find('.buttons').append('<div class="button vk"><div id="vk-like-' + sett.bId + '" class="vk-button" data-url="'+(sett.pageUrl !== '' ? sett.pageUrl : self.options.url)+'" data-pageUrl="'+(sett.pageUrl !== '' ? sett.pageUrl : self.options.url)+'"></div></div>');
+      VK.Widgets.Like("vk-like-" + sett.bId, sett);
+
+	  self.options.buttons.vk.bId++;
     }
   },
   /* Tracking for Google Analytics
@@ -323,7 +350,12 @@
       //if somenone find a solution, mail me !
     },
     vk: function(){
-      // TODO
+      VK.Observer.subscribe('widgets.like.liked', function(likeCount) {
+        _gaq.push(['_trackSocial', 'vkontakte', 'like']);
+      });
+      VK.Observer.subscribe('widgets.like.unliked', function(likeCount) {
+        _gaq.push(['_trackSocial', 'vkontakte', 'unlike']);
+      });
     }
   },
   /* Popup for each social network
@@ -354,7 +386,8 @@
       window.open('http://pinterest.com/pin/create/button/?url='+encodeURIComponent((opt.buttons.pinterest.url !== '' ? opt.buttons.pinterest.url : opt.url))+'&media='+encodeURIComponent(opt.buttons.pinterest.media)+'&description='+opt.buttons.pinterest.description, 'pinterest', 'toolbar=no,width=700,height=300');
     },
     vk: function(opt) {
-      // TODO
+      // TODO: [VK] Popup
+	  console.log('VK Popup', opt);
     }
   };
 
@@ -380,6 +413,7 @@
       urlJson.googlePlus = this.options.urlCurl + '?url={url}&type=googlePlus'; // PHP script for GooglePlus...
       urlJson.stumbleupon = this.options.urlCurl + '?url={url}&type=stumbleupon'; // PHP script for Stumbleupon...
       urlJson.pinterest = this.options.urlCurl + '?url={url}&type=pinterest'; // PHP script for Pinterest...
+      urlJson.vk = this.options.urlCurl + '?url={url}&type=vk'; // PHP script for VK...
     }
     $(this.element).addClass(this.options.className); //add class
 
