@@ -66,6 +66,7 @@
         hashtags: '',
         via: '',
         related: '',
+		username: false,
         lang: 'en'
       },
       digg: { //http://about.digg.com/downloads/button/smart
@@ -95,7 +96,7 @@
         layout: 'horizontal'
       },
       vk: {
-		apiId: 0,
+		apiId: 0,       // VK.com App/Website ID
 		bId: 1,         // button ID on the page
 		height: 22,     // button height: 18, 20, 22, 24
 		// pageTitle
@@ -118,7 +119,8 @@
     //using Graph
     facebook: "http://graph.facebook.com/?id={url}&callback=?",
     //facebook : "http://api.ak.facebook.com/restserver.php?v=1.0&method=links.getStats&urls={url}&format=json"
-    twitter: "http://cdn.api.twitter.com/1/urls/count.json?url={url}&callback=?",
+	twitter: "https://cdn.api.twitter.com/1/urls/count.json?url={url}&callback=?",
+	//twitter: "https://cdn.api.twitter.com/1/users/show.json?screen_name={text}&include_entities=true&callback=?",
     digg: "http://services.digg.com/2.0/story.getInfo?links={url}&type=javascript&callback=?",
     delicious: 'http://feeds.delicious.com/v2/json/urlinfo/data?url={url}&callback=?',
     //stumbleupon: "http://www.stumbleupon.com/services/1.01/badge.getinfo?url={url}&format=jsonp&callback=?",
@@ -170,7 +172,11 @@
     },
     twitter : function(self){
       var sett = self.options.buttons.twitter;
-      $(self.element).find('.buttons').append('<div class="button twitter"><a href="https://twitter.com/share" class="twitter-share-button" data-url="'+(sett.url !== '' ? sett.url : self.options.url)+'" data-count="'+sett.count+'" data-text="'+self.options.text+'" data-via="'+sett.via+'" data-hashtags="'+sett.hashtags+'" data-related="'+sett.related+'" data-lang="'+sett.lang+'">Tweet</a></div>');
+      $(self.element).find('.buttons').append(
+        sett.username
+        ? ('<div class="button twitter" data-text="' + sett.username + '"><a href="https://twitter.com/' + sett.username + '" class="twitter-follow-button" data-text="' + sett.username + '" data-show-count="false">Follow @' + sett.username + '</a></div>')
+        : ('<div class="button twitter"><a href="https://twitter.com/share" class="twitter-share-button" data-url="'+(sett.url !== '' ? sett.url : self.options.url)+'" data-count="'+sett.count+'" data-text="'+self.options.text+'" data-via="'+sett.via+'" data-hashtags="'+sett.hashtags+'" data-related="'+sett.related+'" data-lang="'+sett.lang+'">Tweet</a></div>')
+        );
       var loading = 0;
       if(typeof twttr === 'undefined' && loading == 0){
         loading = 1;
@@ -493,7 +499,11 @@
     var self = this,
     count = 0,
     url = urlJson[name].replace('{url}', encodeURIComponent(this.options.url));
-    if(this.options.buttons[name].urlCount === true && this.options.buttons[name].url !== ''){
+    if('twitter' == name && this.options.buttons[name].username){
+      url = urlJson[name] = "https://cdn.api.twitter.com/1/users/show.json?screen_name="
+        + this.options.buttons[name].username + "&include_entities=true&callback=?";
+    } else
+	if(this.options.buttons[name].urlCount === true && this.options.buttons[name].url !== ''){
       url = urlJson[name].replace('{url}', this.options.buttons[name].url);
     }
     //console.log('name : ' + name + ' - url : '+url); //debug
@@ -519,6 +529,9 @@
           count += parseInt(json[0].total_posts, 10);
         }
         else if(typeof json[0] !== "undefined"){  //Stumbleupon
+        }
+        else if(typeof json.followers_count !== "undefined"){ //Twitter Followers
+          count += parseInt(json.followers_count, 10);
         }
         self.options.count[name] = count;
         self.options.total += count;

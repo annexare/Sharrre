@@ -67,5 +67,27 @@ See examples on [official website](http://sharrre.com/#demos).
 
 Changes by [Annexare Studio](http://annexare.com/):
 
-* Facebook Page likes count
-* [VK](http://vk.com/) support
+* Facebook Page likes count.
+* Twitter Followers button and global count.
+* [VK](http://vk.com/) support.
+
+```js
+	buttons: {
+	  twitter: {
+	  	username: false // if true, gets number of followers instead of tweets
+	  }
+      vk: {
+		apiId: 0,       // VK.com App ID
+		height: 22,     // button height: 18, 20, 22, 24
+		// pageTitle
+		// pageDescription
+		pageUrl: '',    // if you need to personalize url button
+		// pageImage
+		// text: '',    // 140 chars max
+		type: 'full',   // button, full, mini, vertical
+		verb: 0,        // 0 like, 1 recommend
+		width: 350      // only for type = full
+      }
+   }
+```
+
