@@ -7,7 +7,9 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -17,10 +19,7 @@
       <header>
         <h1>Sharrre</h1>
         <p>jQuery plugin for Sharing. Added VK.com and changed Facebook and Twitter behavior.</p>
-
         <p class="view"><a href="https://github.com/annexare/Sharrre">View the Project on GitHub <small>annexare/Sharrre</small></a></p>
-
-
         <ul>
           <li><a href="https://github.com/annexare/Sharrre/zipball/master">Download <strong>ZIP File</strong></a></li>
           <li><a href="https://github.com/annexare/Sharrre/tarball/master">Download <strong>TAR Ball</strong></a></li>
@@ -28,27 +27,33 @@
         </ul>
       </header>
       <section>
-        <h1>jQuery Sharrre Plugin</h1>
+        <h2>Sharrre: jQuery Plugin for Sharing</h2>
 
-<p>Make your sharing widget!
-Sharrre is a jQuery plugin that allows you to create nice widgets sharing for Facebook, Twitter, Google Plus (with PHP script) and more.
-More information on <a href="http://sharrre.com/#demos">Sharrre.com</a>.</p>
+<p><strong>Sharrre</strong> is a jQuery plugin that allows you to create nice widgets sharing for Facebook, Twitter, Google Plus (with PHP script), VK and more.</p>
 
-<h2>Usage</h2>
+<p>Current modification aims to add <strong>VK</strong> support and improve behavior for corporate websites: <strong>Facebook Pages</strong> support, <strong>Twitter followers</strong> (and some more things are planned). Basically created by <strong>Julien Hany</strong>.</p>
+
+<h3>Usage</h3>
 
 <div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="s1">'#sharrre'</span><span class="p">).</span><span class="nx">sharrre</span><span class="p">({</span>
         <span class="nx">share</span><span class="o">:</span> <span class="p">{</span>
             <span class="nx">googlePlus</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">facebook</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-            <span class="nx">twitter</span><span class="o">:</span> <span class="kc">true</span>
+            <span class="nx">twitter</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">vk</span><span class="o">:</span> <span class="kc">true</span>
         <span class="p">},</span>
-        <span class="nx">url</span><span class="o">:</span> <span class="s1">'http://sharrre.com'</span>
+        <span class="nx">buttons</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">vk</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">apiId</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">// VK.com App ID is required</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nx">url</span><span class="o">:</span> <span class="s1">'http://jquery.com/'</span>
     <span class="p">});</span>
 </pre></div>
 
-<h2>Example</h2>
+<h3>Examples</h3>
 
-<div class="highlight"><pre>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"demo1"</span> <span class="na">data-title=</span><span class="s">"sharrre"</span> <span class="na">data-url=</span><span class="s">"http://sharrre.com"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<div class="highlight"><pre>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"demo1"</span> <span class="na">data-title=</span><span class="s">"sharrre"</span> <span class="na">data-url=</span><span class="s">"http://jquery.com/"</span><span class="nt">&gt;&lt;/div&gt;</span>
 </pre></div>
 
 <div class="highlight"><pre>    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
@@ -75,28 +80,28 @@ More information on <a href="http://sharrre.com/#demos">Sharrre.com</a>.</p>
     <span class="p">});</span>
 </pre></div>
 
-<p>See examples on <a href="http://sharrre.com/#demos">official website</a>.</p>
+<p>See more examples on author's <a href="http://sharrre.com/#demos">official website</a>.</p>
 
-<h2>Dependencies</h2>
+<h3>Dependencies</h3>
 
 <ul>
 <li>
 <a href="http://jquery.com/">jQuery 1.7</a> or later.</li>
 <li>
 <a href="http://php.net/">PHP</a> (optionally for some networks).</li>
-</ul><h2>Author</h2>
+</ul><h3>Author</h3>
 
 <ul>
 <li><a href="http://hany.fr/">Julien Hany</a></li>
 <li><a href="http://twitter.com/_JulienH">Twitter (@_JulienH)</a></li>
 <li><a href="http://plus.google.com/111637545317893682325">Google+</a></li>
-</ul><h2>Modifications</h2>
+</ul><h3>Modifications</h3>
 
 <p>Changes by <a href="http://annexare.com/">Annexare Studio</a>:</p>
 
 <ul>
 <li>Facebook Page likes count.</li>
-<li>Twitter Followers button and global count.</li>
+<li>Twitter Followers button and followers global count.</li>
 <li>
 <a href="http://vk.com/">VK</a> support.</li>
 </ul><div class="highlight"><pre>    <span class="nx">buttons</span><span class="o">:</span> <span class="p">{</span>
@@ -104,26 +109,26 @@ More information on <a href="http://sharrre.com/#demos">Sharrre.com</a>.</p>
             <span class="nx">username</span><span class="o">:</span> <span class="kc">false</span> <span class="c1">// if string, gets number of followers instead of tweets</span>
         <span class="p">},</span>
         <span class="nx">vk</span><span class="o">:</span> <span class="p">{</span>
-          <span class="nx">apiId</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>       <span class="c1">// VK.com App ID</span>
-          <span class="nx">height</span><span class="o">:</span> <span class="mi">22</span><span class="p">,</span>     <span class="c1">// button height: 18, 20, 22, 24</span>
-          <span class="c1">// pageTitle</span>
-          <span class="c1">// pageDescription</span>
-          <span class="nx">pageUrl</span><span class="o">:</span> <span class="s1">''</span><span class="p">,</span>    <span class="c1">// if you need to personalize url button</span>
-          <span class="c1">// pageImage</span>
-          <span class="c1">// text: '',    // 140 chars max</span>
-          <span class="nx">type</span><span class="o">:</span> <span class="s1">'full'</span><span class="p">,</span>   <span class="c1">// button, full, mini, vertical</span>
-          <span class="nx">verb</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>        <span class="c1">// 0 like, 1 recommend</span>
-          <span class="nx">width</span><span class="o">:</span> <span class="mi">350</span>      <span class="c1">// only for type = full</span>
+            <span class="nx">apiId</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>     <span class="c1">// VK.com App ID</span>
+            <span class="nx">height</span><span class="o">:</span> <span class="mi">22</span><span class="p">,</span>   <span class="c1">// button height: 18, 20, 22, 24</span>
+            <span class="c1">// pageTitle</span>
+            <span class="c1">// pageDescription</span>
+            <span class="nx">pageUrl</span><span class="o">:</span> <span class="s1">''</span><span class="p">,</span>  <span class="c1">// if you need to personalize url button</span>
+            <span class="c1">// pageImage</span>
+            <span class="c1">// text: '',  // 140 chars max</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s1">'full'</span><span class="p">,</span> <span class="c1">// button, full, mini, vertical</span>
+            <span class="nx">verb</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>      <span class="c1">// 0 like, 1 recommend</span>
+            <span class="nx">width</span><span class="o">:</span> <span class="mi">350</span>    <span class="c1">// only for type = full</span>
         <span class="p">}</span>
     <span class="p">}</span>
 </pre></div>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/annexare">annexare</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/annexare">annexare</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
     
   </body>
 </html>
