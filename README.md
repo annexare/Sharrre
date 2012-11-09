@@ -1,26 +1,32 @@
-# jQuery Sharrre Plugin
+## Sharrre: jQuery Plugin for Sharing
 
-Make your sharing widget!
-Sharrre is a jQuery plugin that allows you to create nice widgets sharing for Facebook, Twitter, Google Plus (with PHP script) and more.
-More information on [Sharrre.com](http://sharrre.com/#demos).
+**Sharrre** is a jQuery plugin that allows you to create nice widgets sharing for Facebook, Twitter, Google Plus (with PHP script), VK and more.
 
-## Usage
+Current modification aims to add **VK** support and improve behavior for corporate websites: **Facebook Pages** support, **Twitter followers** (and some more things are planned). Basically created by **Julien Hany**.
+
+### Usage
 
 ```js
 	$('#sharrre').sharrre({
 		share: {
 			googlePlus: true,
 			facebook: true,
-			twitter: true
+			twitter: true,
+			vk: true
 		},
-		url: 'http://sharrre.com'
+		buttons: {
+			vk: {
+				apiId: 0, // VK.com App ID is required
+			}
+		},
+		url: 'http://jquery.com/'
 	});
 ```
 
-## Example
+### Examples
 
 ```html
-	<div id="demo1" data-title="sharrre" data-url="http://sharrre.com"></div>
+	<div id="demo1" data-title="sharrre" data-url="http://jquery.com/"></div>
 ```
 
 ```js
@@ -48,27 +54,27 @@ More information on [Sharrre.com](http://sharrre.com/#demos).
 	});
 ```
 
-See examples on [official website](http://sharrre.com/#demos).
+See more examples on author's [official website](http://sharrre.com/#demos).
 
 
-## Dependencies
+### Dependencies
 
 * [jQuery 1.7](http://jquery.com/) or later.
 * [PHP](http://php.net/) (optionally for some networks).
 
 
-## Author
+### Author
 
 * [Julien Hany](http://hany.fr/)
 * [Twitter (@_JulienH)](http://twitter.com/_JulienH)
 * [Google+](http://plus.google.com/111637545317893682325)
 
-## Modifications
+### Modifications
 
 Changes by [Annexare Studio](http://annexare.com/):
 
 * Facebook Page likes count.
-* Twitter Followers button and global count.
+* Twitter Followers button and followers global count.
 * [VK](http://vk.com/) support.
 
 ```js
