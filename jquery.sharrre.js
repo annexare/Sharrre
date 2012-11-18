@@ -1,8 +1,9 @@
-/*
- *  Sharrre.com - Make your sharing widget!
- *  Version: beta 1.3.4
- *  Author: Julien Hany
- *  License: MIT http://en.wikipedia.org/wiki/MIT_License or GPLv2 http://en.wikipedia.org/wiki/GNU_General_Public_License
+/*!
+ * Sharrre iQuery Plugin, v1.3.4b
+ * Mod: Annexare Studio, v1.1
+ *
+ * Author: Julien Hany
+ * License: MIT http://en.wikipedia.org/wiki/MIT_License or GPLv2 http://en.wikipedia.org/wiki/GNU_General_Public_License
  */
 
 ;(function ( $, window, document, undefined ) {
@@ -97,6 +98,7 @@
       },
       vk: {
 		apiId: 0,       // VK.com App/Website ID
+		counted: 0,
 		bId: 1,         // button ID on the page
 		height: 22,     // button height: 18, 20, 22, 24
 		// pageTitle
@@ -288,14 +290,31 @@
       var loading = 0,
         vkButton = function() {
           VK.Widgets.Like("vk-like-" + sett.bId++, sett);
-          //VK.api('likes.getList', {type: 'sitepage', page_url: (sett.pageUrl !== '' ? sett.pageUrl : self.options.url)}, function(r) {
-          //  console.log('VK likes.getList: ', r);
-	      //});
+      /*if (this.options.buttons[name].counted == 0) {
+        // first try: JS API
+        url = '';
+        VK.api('likes.getList', {type: 'sitepage', page_url: (this.options.buttons[name].pageUrl !== '' ? this.options.buttons[name].pageUrl : self.options.url)}, function(r) {
+          console.log('VK likes.getList: ', r);
+          if (r.error) {
+            this.options.buttons[name].counted = -1;
+            this.getSocialJson(name);
+          }
+        });
+      } else {
+        // else: temporary PHP solution
+        console.log('VK likes PHP.');
+      }*/
           VK.Observer.subscribe('widgets.like.liked', function(counted) {
-            _gaq.push(['_trackSocial', 'vkontakte', 'like']);
+            self.updateCounter('vk');
+            if (self.options.enableTracking) {
+              _gaq.push(['_trackSocial', 'vkontakte', 'like']);
+            }
           });
           VK.Observer.subscribe('widgets.like.unliked', function(counted) {
-            _gaq.push(['_trackSocial', 'vkontakte', 'unlike']);
+            self.updateCounter('vk', -1);
+            if (self.options.enableTracking) {
+              _gaq.push(['_trackSocial', 'vkontakte', 'unlike']);
+            }
           });
         },
         vkInit = function() {
@@ -321,30 +340,32 @@
   ================================================== */
   tracking = {
     googlePlus: function(){},
-    facebook: function(){
-      //console.log('facebook');
+    facebook: function( self ){
       fb = window.setInterval(function(){
         if (typeof FB !== 'undefined') {
           FB.Event.subscribe('edge.create', function(targetUrl) {
+            self.updateCounter('facebook');
             _gaq.push(['_trackSocial', 'facebook', 'like', targetUrl]);
           });
           FB.Event.subscribe('edge.remove', function(targetUrl) {
+            self.updateCounter('facebook', -1);
             _gaq.push(['_trackSocial', 'facebook', 'unlike', targetUrl]);
           });
           FB.Event.subscribe('message.send', function(targetUrl) {
             _gaq.push(['_trackSocial', 'facebook', 'send', targetUrl]);
           });
-          //console.log('ok');
+
           clearInterval(fb);
         }
       },1000);
     },
-    twitter: function(){
+    twitter: function( self ){
       //console.log('twitter');
       tw = window.setInterval(function(){
         if (typeof twttr !== 'undefined') {
           twttr.events.bind('tweet', function(event) {
             if (event) {
+              self.updateCounter('twitter');
               _gaq.push(['_trackSocial', 'twitter', 'tweet']);
             }
           });
@@ -428,7 +449,7 @@
       urlJson.googlePlus = this.options.urlCurl + '?url={url}&type=googlePlus'; // PHP script for GooglePlus...
       urlJson.stumbleupon = this.options.urlCurl + '?url={url}&type=stumbleupon'; // PHP script for Stumbleupon...
       urlJson.pinterest = this.options.urlCurl + '?url={url}&type=pinterest'; // PHP script for Pinterest...
-      urlJson.vk = this.options.urlCurl + '?url={url}&type=vk'; // PHP script for VK...
+      urlJson.vk = this.options.urlCurl + '?url={url}&type=vk&app={app}'; // PHP script for VK...
     }
     $(this.element).addClass(this.options.className); //add class
 
@@ -496,7 +517,7 @@
       if(val == true){
         loadButton[name](self);
         if(self.options.enableTracking === true){ //add tracking
-          tracking[name]();
+          tracking[name](self);
         }
       }
     });
@@ -508,11 +529,14 @@
     var self = this,
     count = 0,
     url = urlJson[name].replace('{url}', encodeURIComponent(this.options.url));
-    if('twitter' == name && this.options.buttons[name].username){
+    if ('twitter' == name && this.options.buttons[name].username) {
       url = urlJson[name] = "https://cdn.api.twitter.com/1/users/show.json?screen_name="
         + this.options.buttons[name].username + "&include_entities=true&callback=?";
-    } else
-	if(this.options.buttons[name].urlCount === true && this.options.buttons[name].url !== ''){
+    } else if ('vk' == name) {
+      url = url.replace('{app}', this.options.buttons[name].apiId);
+    }
+
+    if (this.options.buttons[name].urlCount === true && this.options.buttons[name].url !== ''){
       url = urlJson[name].replace('{url}', this.options.buttons[name].url);
     }
     //console.log('name : ' + name + ' - url : '+url); //debug
@@ -641,6 +665,18 @@
       this.options.text = text;
     }
   };
+
+  // Changes global counter DOM element value
+  Plugin.prototype.updateCounter = function ( name, change ) {
+    if ( typeof change === 'undefined' ) {
+      change = 1;
+    }
+
+    this.options.count[name] += change;
+    this.options.total += change;
+
+    $(this.element).find('a.count:first').text(this.options.total);
+  }
 
   /* A really lightweight plugin wrapper around the constructor, preventing against multiple instantiations
   ================================================== */

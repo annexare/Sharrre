@@ -83,16 +83,16 @@ Changes by [Annexare Studio](http://annexare.com/):
 			username: false // if string, gets number of followers instead of tweets
 		},
 		vk: {
-		  apiId: 0,       // VK.com App ID
-		  height: 22,     // button height: 18, 20, 22, 24
-		  // pageTitle
-		  // pageDescription
-		  pageUrl: '',    // if you need to personalize url button
-		  // pageImage
-		  // text: '',    // 140 chars max
-		  type: 'full',   // button, full, mini, vertical
-		  verb: 0,        // 0 like, 1 recommend
-		  width: 350      // only for type = full
+			apiId: 0,     // VK.com App ID
+			height: 22,   // button height: 18, 20, 22, 24
+			// pageTitle
+			// pageDescription
+			pageUrl: '',  // if you need to personalize url button
+			// pageImage
+			// text: '',  // 140 chars max
+			type: 'full', // button, full, mini, vertical
+			verb: 0,      // 0 like, 1 recommend
+			width: 350    // only for type = full
 		}
 	}
 ```
